@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<main class="card">
+    <h1>Rock Paper Scissors</h1>
+    <p class="subtitle">Single player vs computer</p>
+
+    <div class="buttons">
+        <button data-move="rock">Rock</button>
+        <button data-move="paper">Paper</button>
+        <button data-move="scissors">Scissors</button>
+    </div>
+
+    <section class="result">
+        <p><strong>You:</strong> <span id="playerMove">-</span></p>
+        <p><strong>Computer:</strong> <span id="computerMove">-</span></p>
+        <p class="final" id="resultText">Pick a move to play.</p>
+    </section>
+</main>
+<script src="/app.js"></script>
+</body>
+</html>
