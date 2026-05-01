@@ -71,4 +71,3 @@ jobs:
        -Dsonar.host.url=http://192.168.56.102:9005 \
        -Dsonar.token=${{ secrets.SONAR_TOKEN }}
        -Dsonar.qualitygate.wait=true
-  
