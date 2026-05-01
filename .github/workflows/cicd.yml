@@ -55,15 +55,20 @@ jobs:
       run: mvn package   
       
   sonarqube:
-    runs-on: ubuntu-latest
+    runs-on: bento-runner
+    needs: package
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v4
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
       with:
-        fetch-depth: 0
-    - name: SonarQube Scan
-      uses: SonarSource/sonarqube-scan-action@v8.0.0
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}     
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Build + Sonar
+      run: mvn clean verify sonar:sonar \
+        -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
+        -Dsonar.host.url=http://192.168.56.101:9090    
     - name: SonarQube Quality Gate check
       id: sonarqube-quality-gate-check
       uses: sonarsource/sonarqube-quality-gate-action@master
