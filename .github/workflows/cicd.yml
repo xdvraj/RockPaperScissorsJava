@@ -66,9 +66,10 @@ jobs:
         distribution: 'temurin'
 
     - name: Build + Sonar
-      run: mvn clean verify sonar:sonar \
-        -Dsonar.host.url=http://192.168.56.102:9005 \
-        -Dsonar.token=${{ secrets.SONAR_TOKEN }}   
+      run: |
+       mvn clean verify sonar:sonar \
+       -Dsonar.host.url=http://192.168.56.102:9005 \
+       -Dsonar.token=${{ secrets.SONAR_TOKEN }}
         
     - name: SonarQube Quality Gate check
       id: sonarqube-quality-gate-check
