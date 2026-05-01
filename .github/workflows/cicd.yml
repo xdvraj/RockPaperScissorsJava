@@ -52,7 +52,12 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: package
-      run: mvn package   
+      run: mvn package 
+    - name: Upload JAR artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: rps-jar
+        path: target/*.jar
       
   sonarqube:
     runs-on: bento-runner
@@ -81,3 +86,14 @@ jobs:
       uses: sonarsource/sonarqube-quality-gate-action@master
       env:
        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  buildDownload:
+    runs-on: bento-runner
+    needs: sonarqube
+    steps:
+    - uses: actions/checkout@v4
+    - name: Upload JAR artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: app-jar
+        path: app
