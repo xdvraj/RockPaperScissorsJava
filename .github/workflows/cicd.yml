@@ -65,12 +65,9 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Sonar Scan
-      uses: SonarSource/sonarqube-scan-action@v8.0.0
-      env:
-       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-    - name: Quality Gate
-      uses: sonarsource/sonarqube-quality-gate-action@master
-      env:
-       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    - name: Build + Sonar
+      run: |
+       mvn clean verify sonar:sonar \
+       -Dsonar.host.url=http://192.168.56.102:9005 \
+       -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
+       -Dsonar.qualitygate.wait=true
