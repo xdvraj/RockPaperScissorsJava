@@ -39,3 +39,37 @@ jobs:
       run: sudo apt install gitleaks -y
     - name: Actual Scan 
       run: gitleaks detect source . -r gitleaks-report.json -f json
+
+  package:
+    runs-on: bento-runner
+    needs: trivy    
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+    - name: package
+      run: mvn package   
+      
+  sonarqube:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+    - name: SonarQube Scan
+      uses: SonarSource/sonarqube-scan-action@v8.0.0
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}     
+    - name: SonarQube Quality Gate check
+      id: sonarqube-quality-gate-check
+      uses: sonarsource/sonarqube-quality-gate-action@master
+      with:
+          pollingTimeoutSec: 600
+      env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} #OPTIONAL
+  
